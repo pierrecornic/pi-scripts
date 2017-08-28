@@ -1,5 +1,5 @@
 /*
- Weather Shield Example
+ Weather Shield Example/essai
  By: Nathan Seidle
  SparkFun Electronics
  Date: November 16th, 2013
