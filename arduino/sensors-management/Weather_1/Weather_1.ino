@@ -23,6 +23,7 @@
   Updated by Joel Bartlett
   03/02/2017
   Removed HTU21D code and replaced with Si7021
+  Updated by Gildas 06/09/2017
 
  */
 
@@ -188,6 +189,7 @@ void loop()
         windspdavg[seconds_2m] = (int)currentSpeed;
         winddiravg[seconds_2m] = currentDirection;
         //if(seconds_2m % 10 == 0) displayArrays(); //For testing
+        //windspeedmph = currentSpeed; // ajouté par Gildas
 
         //Check to see if this is a gust for the minute
         if(currentSpeed > windgust_10m[minutes_10m])
@@ -230,7 +232,7 @@ void calcWeather()
     winddir = get_wind_direction();
 
     //Calc windspeed
-    //windspeedmph = get_wind_speed(); //This is calculated in the main loop
+    windspeedmph = get_wind_speed(); //This is calculated in the main loop
 
     //Calc windgustmph
     //Calc windgustdir
@@ -410,20 +412,20 @@ void printWeather()
     Serial.print(winddir);
     Serial.print(",windspeedmph=");
     Serial.print(windspeedmph, 1);
-    Serial.print(",windgustmph=");
-    Serial.print(windgustmph, 1);
-    Serial.print(",windgustdir=");
-    Serial.print(windgustdir);
+    //Serial.print(",windgustmph=");
+    //Serial.print(windgustmph, 1);
+    //Serial.print(",windgustdir=");
+    //Serial.print(windgustdir);
     Serial.print(",windspdmph_avg2m=");
     Serial.print(windspdmph_avg2m, 1);
     Serial.print(",winddir_avg2m=");
     Serial.print(winddir_avg2m);
-    Serial.print(",windgustmph_10m=");
-    Serial.print(windgustmph_10m, 1);
-    Serial.print(",windgustdir_10m=");
-    Serial.print(windgustdir_10m);
-    Serial.print(",humidity=");
-    Serial.print(humidity, 1);
+    //Serial.print(",windgustmph_10m=");
+    //Serial.print(windgustmph_10m, 1);
+    //Serial.print(",windgustdir_10m=");
+    //Serial.print(windgustdir_10m);
+    //Serial.print(",humidity=");
+    //Serial.print(humidity, 1);
     Serial.print(",tempc=");
     Serial.print(tempc, 1);
     Serial.print(",rainin=");
@@ -432,10 +434,10 @@ void printWeather()
     Serial.print(dailyrainin, 2);
     Serial.print(",pressure=");
     Serial.print(pressure, 2);
-    Serial.print(",batt_lvl=");
-    Serial.print(batt_lvl, 2);
-    Serial.print(",light_lvl=");
-    Serial.print(light_lvl, 2);
+    //Serial.print(",batt_lvl=");
+    //Serial.print(batt_lvl, 2);
+    //Serial.print(",light_lvl=");
+    //Serial.print(light_lvl, 2);
     Serial.print(",");
     Serial.println("#");
 
