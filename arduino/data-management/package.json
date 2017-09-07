@@ -1,0 +1,15 @@
+{
+  "name": "data-management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serialportreader-v2.js",
+  "dependencies": {
+    "serialport": "^5.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,3 +1,11 @@
+## Data Management
+
+```
+cd arduino/data-management
+npm install
+node serialportreader-v2.js
+```
+
 Network issue
 -------------
 
