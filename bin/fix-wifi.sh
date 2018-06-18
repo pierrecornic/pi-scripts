@@ -1,5 +1,6 @@
 #!/bin/bash
 SERVERIP=192.168.1.1
+# Reboot wifi if 3 pings unsucessful
 ping -c 3 $SERVERIP > /dev/null 2>&1
 if [ $? -ne 0 ]
 then

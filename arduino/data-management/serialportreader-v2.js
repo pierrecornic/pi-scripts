@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 function isEmpty(obj) {
     return Object.keys(obj).length === 0;
 }
@@ -8,13 +10,13 @@ var SerialPort = serialport.SerialPort;
 var sp = new SerialPort("/dev/ttyACM0", {  parser: serialport.parsers.readline("\n")});
 var windCorrection = 270;
 var fs = require('fs');
-sp.on("data", function (data) {  
+sp.on("data", function (data) {
 	if (data.length == 0) {
 		return;
-	}  
+	}
 	var dataArray	= data.split(",");
 	var objectResult = {};
-	var results = dataArray.map(function (i) { 
+	var results = dataArray.map(function (i) {
                 var item = i.split('=');
 		var key = item[0];
 		switch (key) {
