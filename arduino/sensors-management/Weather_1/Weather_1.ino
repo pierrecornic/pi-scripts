@@ -154,7 +154,7 @@ void setup()
 {
 	// Setup the serial link
 	Serial.begin(9600);
-	Serial.println("Weather Shield Example");
+	Serial.println("Setting up...");
 
 	// Configure the pins
 	pinMode(STAT1, OUTPUT); //Status LED Blue
@@ -175,6 +175,7 @@ void setup()
 	// Configure the humidity sensor
 	myHumidity.begin();
 
+	// Initialize the time
 	seconds = 0;
 	lastSecond = millis();
 
@@ -185,6 +186,7 @@ void setup()
 	// Turn on interrupts
 	interrupts();
 
+	Serial.println("done.");
 	Serial.println("Weather Shield online!");
 }
 
@@ -193,7 +195,7 @@ void loop()
 	float wind_speed;
 	int wind_dir;
 
-	//Keep track of which minute it is
+	// Keep track of which minute it is
 	if(millis() - lastSecond >= 1000) {
 		// Blink the status LED
 		digitalWrite(STAT1, HIGH);
@@ -209,7 +211,7 @@ void loop()
 		wind_dir = get_wind_direction();
 		windspdavg[seconds_2m] = wind_speed;
 		winddiravg[seconds_2m] = wind_dir;
-		//windspeedmph = wind_speed; // ajouté par Gildas
+		// windspeedmph = wind_speed; // ajouté par Gildas
 
 		// Check to see if this is a gust for the minute
 		if(wind_speed > windgust_10m[minutes_10m]) {
@@ -234,7 +236,7 @@ void loop()
 		}
 
 		// Report all readings every second
-		printWeather();
+		print_weather();
 
 		digitalWrite(STAT1, LOW); // Turn off the status LED
 	}
@@ -242,32 +244,29 @@ void loop()
 	delay(100);
 }
 
-// Calculates each of the variables that wunderground is expecting
-void calcWeather()
+static float compute_average(float *values, int number)
 {
-	//Calc winddir
-	winddir = get_wind_direction();
+	int i;
+	float mean = 0;
+	for(i = 0; i < number; i++)
+		mean += values[i];
 
-	//Calc windspeed
-	windspeedmph = get_wind_speed(); //This is calculated in the main loop
+	mean /= (float)number;
 
-	//Calc daily_wind_max_mph
-	//Calc windgustdir
-	//These are calculated in the main loop
+	return mean;
+}
 
-	//Calc windspdmph_avg2m
-	float temp = 0;
-	for(int i = 0 ; i < 120 ; i++)
-		temp += windspdavg[i];
-	temp /= 120.0;
-	windspdmph_avg2m = temp;
-
-	//Calc winddir_avg2m, Wind Direction
-	//You can't just take the average. Google "mean of circular quantities" for more info
-	//We will use the Mitsuta method because it doesn't require trig functions
-	//And because it sounds cool.
-	//Based on: http://abelian.org/vlf/bearings.html
-	//Based on: http://stackoverflow.com/questions/1813483/averaging-angles-again
+/**
+ * @brief Compute a circular average
+ *
+ * You can't just take the average. Google "mean of circular quantities" for more info.
+ * We will use the Mitsuta method because it doesn't require trig functions and
+ * because it sounds cool.
+ * Based on: http://abelian.org/vlf/bearings.html
+ * Based on: http://stackoverflow.com/questions/1813483/averaging-angles-again
+ */
+static int compute_circ_average(int *values, int number)
+{
 	long sum = winddiravg[0];
 	int D = winddiravg[0];
 	for(int i = 1 ; i < WIND_DIR_AVG_SIZE ; i++)
@@ -283,15 +282,37 @@ void calcWeather()
 
 		sum += D;
 	}
-	winddir_avg2m = sum / WIND_DIR_AVG_SIZE;
-	if(winddir_avg2m >= 360) winddir_avg2m -= 360;
-	if(winddir_avg2m < 0) winddir_avg2m += 360;
 
-	//Calc last_10m_max_wind_mph
-	//Calc windgustdir_10m
-	//Find the largest windgust in the last 10 minutes
+	sum /= WIND_DIR_AVG_SIZE;
+	if(sum >= 360) sum -= 360;
+	if(sum < 0) sum += 360;
+
+	return sum;
+}
+
+// Calculates each of the variables that wunderground is expecting
+void calc_weather()
+{
+	//Calc winddir
+	winddir = get_wind_direction();
+
+	//Calc windspeed
+	windspeedmph = get_wind_speed(); //This is calculated in the main loop
+
+	//Calc daily_wind_max_mph
+	//Calc windgustdir
+	//These are calculated in the main loop
+
+	// Compute the wind speed and direction average over the last 2 minutes.
+	windspdmph_avg2m = compute_average(windspdavg, 120);
+	winddir_avg2m = compute_circ_average(winddiravg, WIND_DIR_AVG_SIZE);
+
+	// Calc last_10m_max_wind_mph
+	// Calc windgustdir_10m
+	// Find the largest windgust in the last 10 minutes
 	last_10m_max_wind_mph = 0;
 	windgustdir_10m = 0;
+
 	//Step through the 10 minutes
 	for(int i = 0; i < 10 ; i++)
 	{
@@ -332,8 +353,8 @@ void calcWeather()
 	batt_lvl = get_battery_level();
 }
 
-//Returns the voltage of the light sensor based on the 3.3V rail
-//This allows us to ignore what VCC might be (an Arduino plugged into USB has VCC of 4.5 to 5.2V)
+// Returns the voltage of the light sensor based on the 3.3V rail
+// This allows us to ignore what VCC might be (an Arduino plugged into USB has VCC of 4.5 to 5.2V)
 float get_light_level()
 {
 	float operatingVoltage = analogRead(REFERENCE_3V3);
@@ -420,9 +441,9 @@ int get_wind_direction()
 
 //Prints the various variables directly to the port
 //I don't like the way this function is written but Arduino doesn't support floats under sprintf
-void printWeather()
+void print_weather()
 {
-	calcWeather(); //Go calc all the various sensors
+	calc_weather(); // Go calc all the various sensors
 
 	Serial.println();
 	Serial.print("$,winddir=");
@@ -457,5 +478,4 @@ void printWeather()
 	//Serial.print(light_lvl, 2);
 	Serial.print(",");
 	Serial.println("#");
-
 }
