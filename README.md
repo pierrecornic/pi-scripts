@@ -51,6 +51,21 @@ sources:
 https://askubuntu.com/questions/138472/how-do-i-connect-to-a-wpa-wifi-network-using-the-command-line/138476#138476
 http://weworkweplay.com/play/automatically-connect-a-raspberry-pi-to-a-wifi-network/
 
+
+Arduino-pi connection
+---------------------
+The arduino's USB wire is simply plugged to the pi.
+This way, the pi can easily reflash the arduino's program (aka sketch),
+and exchange data through the serial port.
+
+1. On the pi, download the arduino IDE (for Linux ARM) and install it.
+2. Install the necessary libraries:
+If you have a display on the pi (or vncserver), open the IDE and use the library manager.
+If not, locate the libraries' github repos, clone them, and put simlinks in arduino/libraries/.
+3. To build and flash the arduino from the pi:
+./arduino-1.8.5/arduino --port /dev/ttyACM0 --board --upload arduino:avr:uno mysketch.ino
+Warning: make sure that nobody else is accessing /dev/ttyACM0 otherwise the upload will fail.
+
 Network issue
 -------------
 
