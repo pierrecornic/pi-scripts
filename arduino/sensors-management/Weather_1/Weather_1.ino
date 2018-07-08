@@ -446,36 +446,16 @@ void print_weather()
 	calc_weather(); // Go calc all the various sensors
 
 	Serial.println();
-	Serial.print("$,winddir=");
+	Serial.print("$winddir=");
 	Serial.print(winddir);
 	Serial.print(",windspeedmph=");
 	Serial.print(windspeedmph, 1);
-	//Serial.print(",daily_wind_max_mph=");
-	//Serial.print(daily_wind_max_mph, 1);
-	//Serial.print(",windgustdir=");
-	//Serial.print(windgustdir);
-	Serial.print(",windspdmph_avg2m=");
-	Serial.print(windspdmph_avg2m, 1);
-	Serial.print(",winddir_avg2m=");
-	Serial.print(winddir_avg2m);
-	//Serial.print(",last_10m_max_wind_mph=");
-	//Serial.print(last_10m_max_wind_mph, 1);
-	//Serial.print(",windgustdir_10m=");
-	//Serial.print(windgustdir_10m);
-	//Serial.print(",humidity=");
-	//Serial.print(humidity, 1);
 	Serial.print(",tempc=");
 	Serial.print(tempc, 1);
 	Serial.print(",last_hour_rain_inches=");
 	Serial.print(last_hour_rain_inches, 2);
-	Serial.print(",daily_rain_inches=");
-	Serial.print(daily_rain_inches, 2);
 	Serial.print(",pressure=");
 	Serial.print(pressure, 2);
-	//Serial.print(",batt_lvl=");
-	//Serial.print(batt_lvl, 2);
-	//Serial.print(",light_lvl=");
-	//Serial.print(light_lvl, 2);
 	Serial.print(",");
 	Serial.println("#");
 }
