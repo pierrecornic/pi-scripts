@@ -10,6 +10,9 @@ Wifi setup on the Pi
 --------------------
 !Warning! iw- commands don't support WPA (which is now the default wifi
 encryption). So you must use wpa_supplicant.
+!WARNING! If you connect a keyboard and a mouse to the Pi, the USB hub can't
+provide enough power and the wifi dongle becomes unstable...
+
 
 1. Make sure that wlan0 exists:
 	iwconfig
