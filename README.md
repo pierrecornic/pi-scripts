@@ -66,7 +66,7 @@ and exchange data through the serial port.
 If you have a display on the pi (or vncserver), open the IDE and use the library manager.
 If not, locate the libraries' github repos, clone them, and put simlinks in arduino/libraries/.
 3. To build and flash the arduino from the pi:
-./arduino-1.8.5/arduino --port /dev/ttyACM0 --board --upload arduino:avr:uno mysketch.ino
+cd arduino-1.8.5; ./arduino --port /dev/ttyACM0 --board  arduino:avr:uno --upload ../pi-scripts/arduino/sensors-management/Weather_1/Weather_1.ino
 Warning: make sure that nobody else is accessing /dev/ttyACM0 otherwise the upload will fail.
 
 Network issue
