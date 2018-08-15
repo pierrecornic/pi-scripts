@@ -297,7 +297,7 @@ void calc_weather()
 	winddir = get_wind_direction();
 
 	//Calc windspeed
-	windspeedmph = get_wind_speed(); //This is calculated in the main loop
+	//This is calculated in the main loop
 
 	//Calc daily_wind_max_mph
 	//Calc windgustdir
@@ -405,6 +405,7 @@ float get_wind_speed()
 	   Serial.print("Windspeed:");
 	   Serial.println(windSpeed);*/
 
+    windspeedmph = windSpeed;
 	return(windSpeed);
 }
 
@@ -458,4 +459,20 @@ void print_weather()
 	Serial.print(pressure, 2);
 	Serial.print(",");
 	Serial.println("#");
+
+	// If output in JSON, knots and centimeters use the following
+	//Serial.println();
+    //	Serial.print("{");
+    //	Serial.print("\"wind_direction\":");
+    //	Serial.print(winddir);
+    //	Serial.print(",\"wind_speed_knots\":");
+    //	Serial.print(windspeedmph*0.868976242, 1);
+    //	Serial.print(",\"temp_c\":");
+    //	Serial.print(tempc, 1);
+    //	Serial.print(",\"last_hour_rain_cm\":");
+    //	Serial.print(last_hour_rain_inches*2.54, 2);
+    //	Serial.print(",\"pressure\":");
+    //	Serial.print(pressure, 2);
+    //	Serial.print("}");
+    //	Serial.println();
 }

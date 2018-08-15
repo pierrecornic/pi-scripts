@@ -33,10 +33,10 @@ with open('data_meteo_yeu.log', 'w') as f:
             # push to elastic search
             entry = {
                     '@timestamp': datetime.now(),
-                    'winddir': vals[0],
-                    'windspeedmph': vals[1],
-                    'tempc': vals[2],
-                    'last_hour_rain_inches': vals[3],
+                    'wind_direction': vals[0],
+                    'wind_speed_knots': vals[1]*0.868976242,
+                    'temp_c': vals[2],
+                    'last_hour_rain_cm': vals[3]*2.54,
                     'pressure': vals[4]
                     }
             res = es.index(index=myindex, doc_type="measure", body=entry)
